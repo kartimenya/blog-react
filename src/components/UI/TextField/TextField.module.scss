@@ -1,0 +1,45 @@
+.textField {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  background-color: var(--color-white);
+  border: 1px solid rgba(#000, 0.2);
+  border-radius: 5px;
+  padding: 0 15px;
+  height: 40px;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-text);
+
+  &.error {
+    border: 1px solid red;
+  }
+  &::placeholder {
+    color: #a5a5ad;
+    opacity: 1;
+  }
+  &.bold {
+    font-weight: 700;
+    color: #000;
+  }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+}
+.caption {
+  margin-bottom: 7px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+}
+
+.errorMessage {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+  color: red;
+  margin-top: 5px;
+}

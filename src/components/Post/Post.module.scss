@@ -1,0 +1,40 @@
+.post {
+  &__img {
+    margin-bottom: 10px;
+    img {
+      width: 100%;
+    }
+  }
+  &__tags {
+    margin-bottom: 10px;
+    ul {
+      display: flex;
+      li {
+        cursor: pointer;
+        position: relative;
+        padding: 0 10px 0 15px;
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 11px;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: mediumaquamarine;
+        }
+      }
+    }
+  }
+  &__title {
+    font-size: 20px;
+    line-height: 25px;
+    margin-bottom: 10px;
+  }
+  &__desc {
+    margin-bottom: 10px;
+  }
+  &__more {
+    margin-top: 20px;
+  }
+}

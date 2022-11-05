@@ -1,0 +1,22 @@
+.editor {
+  margin: 20px 0;
+}
+.inputTitle {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  background-color: var(--color-white);
+  border: 1px solid rgba(#000, 0.2);
+  border-radius: 5px;
+  padding: 0 15px;
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17px;
+  color: #000;
+  &::placeholder {
+    color: #a5a5ad;
+    opacity: 1;
+  }
+}
