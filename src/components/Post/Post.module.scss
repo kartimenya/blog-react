@@ -31,10 +31,28 @@
     line-height: 25px;
     margin-bottom: 10px;
   }
+  &__user {
+    font-size: 16px;
+    font-weight: 700;
+    color: black;
+  }
   &__desc {
-    margin-bottom: 10px;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   &__more {
     margin-top: 20px;
   }
+}
+.viewBlock {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.viewSvg {
+  width: 15px;
 }

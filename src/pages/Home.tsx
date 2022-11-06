@@ -14,7 +14,7 @@ const Home = () => {
   return (
     <div className="posts">
       {posts.map((post) => (
-        <Post key={post._id} _id={post._id} text={post.text} title={post.title} user={post.user} />
+        <Post key={post._id} {...post} />
       ))}
     </div>
   );
