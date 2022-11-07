@@ -5,7 +5,7 @@ import { useAppDispatch } from './hooks/reduxHooks';
 import AddPost from './pages/AddPost/AddPost';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage/LoginPage';
-import PostPage from './pages/PostPage';
+import PostPage from './pages/PostPage/PostPage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';
 import { fetchAuthMe } from './store/slises/auth';
 
@@ -25,6 +25,7 @@ const App = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
         <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/post/:id/edit" element={<AddPost />} />
         <Route path="/addPost" element={<AddPost />} />
       </Routes>
     </Layout>

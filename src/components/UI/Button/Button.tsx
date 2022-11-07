@@ -5,7 +5,7 @@ import styles from './Button.module.scss';
 type IButton = {
   children?: React.ReactNode;
   type?: 'button' | 'submit' | 'reset' | undefined;
-  color?: 'green';
+  color?: 'green' | 'blue';
   onClick?: () => void;
 };
 
@@ -14,7 +14,11 @@ const Button: FC<IButton> = ({ children, onClick, color, ...props }) => {
     <button
       {...props}
       onClick={onClick}
-      className={classNames(styles.btn, color === 'green' ? styles.green : '')}>
+      className={classNames(
+        styles.btn,
+        color === 'green' ? styles.green : '',
+        color === 'blue' ? styles.blue : '',
+      )}>
       {children}
     </button>
   );

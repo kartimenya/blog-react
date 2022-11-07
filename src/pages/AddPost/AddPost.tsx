@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import SimpleMDE from 'react-simplemde-editor';
 import Button from '../../components/UI/Button/Button';
 import { useAppSelector } from '../../hooks/reduxHooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'easymde/dist/easymde.min.css';
 import style from './AddPost.module.scss';
 import axios from '../../axios';
@@ -13,16 +13,14 @@ const AddPost = () => {
   const navigate = useNavigate();
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
+  const { id } = useParams();
+  const isEditing = Boolean(id);
 
   useEffect(() => {
     if (!window.localStorage.getItem('token') && !isAuth) {
       navigate('/');
     }
   }, [isAuth, navigate]);
-
-  const onChange = useCallback((valuse: string) => {
-    setText(valuse);
-  }, []);
 
   const options = useMemo(
     () => ({
@@ -40,11 +38,33 @@ const AddPost = () => {
     [],
   );
 
+  useEffect(() => {
+    if (id) {
+      axios.get<IPost>(`/post/${id}`).then(({ data }) => {
+        setText(data.text);
+        setTitle(data.title);
+      });
+    }
+  }, []);
+
+  const onChange = useCallback((valuse: string) => {
+    setText(valuse);
+  }, []);
+
   const onSumit = async () => {
     try {
       const { data } = await axios.post<IPost>('/post', { title, text });
-      console.log(data);
       const id = data._id;
+
+      navigate(`/post/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSumitEditor = async () => {
+    try {
+      await axios.patch(`post/${id}`, { title, text });
 
       navigate(`/post/${id}`);
     } catch (error) {
@@ -61,8 +81,12 @@ const AddPost = () => {
         value={title}
         type="text"
       />
-      <SimpleMDE className={style.editor} options={options} onChange={onChange} />
-      <Button onClick={onSumit}>Опубликовать</Button>
+      <SimpleMDE className={style.editor} options={options} value={text} onChange={onChange} />
+      {isEditing ? (
+        <Button onClick={onSumitEditor}>Сохранить</Button>
+      ) : (
+        <Button onClick={onSumit}>Опубликовать</Button>
+      )}
     </div>
   );
 };

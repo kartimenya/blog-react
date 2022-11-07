@@ -55,14 +55,21 @@ const Post: FC<IPost> = ({ text, title, _id, user, viewCount }) => {
 
           {viewCount}
         </p>
-        <Link className={styles.post__more} to={`post/${_id}`}>
-          <Button>Читать</Button>
-        </Link>
-        {user._id === userData?.data?.user?._id ? (
-          <Button onClick={() => removePost(_id)} color="green">
-            Удалить
-          </Button>
-        ) : null}
+        <div className={styles.btns}>
+          <Link className={styles.post__more} to={`post/${_id}`}>
+            <Button>Читать</Button>
+          </Link>
+          {user._id === userData?.data?.user?._id ? (
+            <>
+              <Button onClick={() => removePost(_id)} color="green">
+                Удалить
+              </Button>
+              <Link to={`/post/${_id}/edit`}>
+                <Button color="blue">Редактировать</Button>
+              </Link>
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );
