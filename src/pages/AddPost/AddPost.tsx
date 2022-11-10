@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import SimpleMDE from 'react-simplemde-editor';
 import Button from '../../components/UI/Button/Button';
 import { useAppSelector } from '../../hooks/reduxHooks';
@@ -11,16 +11,34 @@ import { IPost } from '../../models';
 const AddPost = () => {
   const isAuth = useAppSelector((state) => Boolean(state.authReducer.data));
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState('');
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   const { id } = useParams();
   const isEditing = Boolean(id);
+  const inputFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!window.localStorage.getItem('token') && !isAuth) {
       navigate('/');
     }
   }, [isAuth, navigate]);
+
+  const handleChangeFile = async (e: ChangeEvent<HTMLInputElement>) => {
+    try {
+      const formData = new FormData();
+      if (e.target.files) {
+        const file = e.target.files[0];
+        formData.append('image', file);
+        const { data } = await axios.post('/upload', formData);
+        console.log(data);
+        setImageUrl(data.url);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Ошибка при загрузке изображения');
+    }
+  };
 
   const options = useMemo(
     () => ({
@@ -43,17 +61,20 @@ const AddPost = () => {
       axios.get<IPost>(`/post/${id}`).then(({ data }) => {
         setText(data.text);
         setTitle(data.title);
+        if (data.imageUrl) {
+          setImageUrl(data.imageUrl);
+        }
       });
     }
-  }, []);
+  }, [id]);
 
   const onChange = useCallback((valuse: string) => {
     setText(valuse);
   }, []);
 
-  const onSumit = async () => {
+  const onSubmit = async () => {
     try {
-      const { data } = await axios.post<IPost>('/post', { title, text });
+      const { data } = await axios.post<IPost>('/post', { title, text, imageUrl });
       const id = data._id;
 
       navigate(`/post/${id}`);
@@ -64,8 +85,7 @@ const AddPost = () => {
 
   const onSumitEditor = async () => {
     try {
-      await axios.patch(`post/${id}`, { title, text });
-
+      await axios.patch(`post/${id}`, { title, text, imageUrl });
       navigate(`/post/${id}`);
     } catch (error) {
       console.log(error);
@@ -74,6 +94,21 @@ const AddPost = () => {
 
   return (
     <div>
+      <div className={style.btnImg}>
+        <Button onClick={() => inputFileRef.current?.click()} color="blue">
+          Загрузить изображение
+        </Button>
+      </div>
+      {imageUrl && (
+        <>
+          <div>
+            <Button onClick={() => setImageUrl('')}>Удалить</Button>
+          </div>
+
+          <img src={`http://localhost:4444${imageUrl}`} alt="img" />
+        </>
+      )}
+      <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
       <input
         className={style.inputTitle}
         placeholder="Введите название статьи"
@@ -85,7 +120,7 @@ const AddPost = () => {
       {isEditing ? (
         <Button onClick={onSumitEditor}>Сохранить</Button>
       ) : (
-        <Button onClick={onSumit}>Опубликовать</Button>
+        <Button onClick={onSubmit}>Опубликовать</Button>
       )}
     </div>
   );

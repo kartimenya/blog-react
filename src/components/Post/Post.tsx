@@ -6,7 +6,7 @@ import { fetchRemovePosts } from '../../store/slises/posts';
 import Button from '../UI/Button/Button';
 import styles from './Post.module.scss';
 
-const Post: FC<IPost> = ({ text, title, _id, user, viewCount }) => {
+const Post: FC<IPost> = ({ text, title, _id, user, viewCount, imageUrl }) => {
   const userData = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
 
@@ -17,10 +17,7 @@ const Post: FC<IPost> = ({ text, title, _id, user, viewCount }) => {
   return (
     <div className={styles.post}>
       <div className={styles.post__img}>
-        <img
-          src="https://media.istockphoto.com/photos/the-word-blog-arranged-from-wooden-blocks-placed-on-a-white-computer-picture-id1338011657?b=1&k=20&m=1338011657&s=170667a&w=0&h=QxvXC8F7nKbux4YekofifQ3cvucJuLVtXaGdxu6ZLHU="
-          alt=""
-        />
+        <img src={`http://localhost:4444${imageUrl}`} alt="" />
       </div>
       <div className={styles.post__info}>
         <div className={styles.post__tags}>

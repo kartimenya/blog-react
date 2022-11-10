@@ -17,7 +17,7 @@ const Header: FC = () => {
   return (
     <header className={styles.header}>
       <Link className={styles.link} to="/">
-        logo1
+        MyBlog
       </Link>
       {isAuth ? (
         <div>
