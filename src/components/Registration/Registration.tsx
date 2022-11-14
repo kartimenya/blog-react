@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { IRegist } from '../../models';
-import { fetchRegistration } from '../../store/slises/auth';
+import { cleanFailedMasage, fetchRegistration } from '../../store/slises/auth';
 import TextField from '../UI/TextField/TextField';
 import styles from './Registration.module.scss';
 
 const Registration = () => {
   const dispatch = useAppDispatch();
+  const { failedMasage } = useAppSelector((state) => state.authReducer);
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       userName: 'Name',
@@ -21,6 +22,15 @@ const Registration = () => {
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (failedMasage) {
+      alert(failedMasage);
+    }
+    return () => {
+      dispatch(cleanFailedMasage());
+    };
+  }, [failedMasage, dispatch]);
 
   const onSubmit = (values: IRegist) => {
     dispatch(fetchRegistration(values));

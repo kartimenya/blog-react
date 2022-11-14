@@ -26,5 +26,5 @@ export interface IPost {
   text: string;
   viewCount: number;
   user: IUser;
-  imageUrl?: string;
+  imageUrl: string;
 }

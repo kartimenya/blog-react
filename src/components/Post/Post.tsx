@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { IPost } from '../../models';
@@ -17,7 +18,7 @@ const Post: FC<IPost> = ({ text, title, _id, user, viewCount, imageUrl }) => {
   return (
     <div className={styles.post}>
       <div className={styles.post__img}>
-        <img src={`http://localhost:4444${imageUrl}`} alt="" />
+        {imageUrl && <img src={`http://localhost:4444${imageUrl}`} alt="" />}
       </div>
       <div className={styles.post__info}>
         <div className={styles.post__tags}>
@@ -30,9 +31,12 @@ const Post: FC<IPost> = ({ text, title, _id, user, viewCount, imageUrl }) => {
             </li>
           </ul>
         </div>
-        <p className={styles.post__user}>{user.userName}</p>
+        <p className={styles.post__user}>
+          <span>Автор: </span>
+          {user.userName}
+        </p>
         <h2 className={styles.post__title}>{title}</h2>
-        <p className={styles.post__desc}>{text}</p>
+        <ReactMarkdown className={styles.post__desc} children={text} />
         <p className={styles.viewBlock}>
           <svg className={styles.viewSvg} x="0px" y="0px" viewBox="0 0 59.2 59.2">
             <path

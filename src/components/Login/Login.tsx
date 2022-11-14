@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { IAuthResponse, ILogin } from '../../models';
-import { fetchUserData } from '../../store/slises/auth';
+import { cleanFailedMasage, fetchUserData } from '../../store/slises/auth';
 import TextField from '../UI/TextField/TextField';
 import styles from './Login.module.scss';
 
@@ -11,6 +11,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
   const isAuth = useAppSelector((state) => Boolean(state.authReducer.data));
   const navigate = useNavigate();
+  const { failedMasage } = useAppSelector((state) => state.authReducer);
 
   const {
     register,
@@ -23,6 +24,15 @@ const Login = () => {
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (failedMasage) {
+      alert(failedMasage);
+    }
+    return () => {
+      dispatch(cleanFailedMasage());
+    };
+  }, [failedMasage, dispatch]);
 
   const onSubmit = async (values: ILogin) => {
     const data = await dispatch(fetchUserData(values));

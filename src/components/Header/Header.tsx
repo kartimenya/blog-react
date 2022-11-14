@@ -20,7 +20,7 @@ const Header: FC = () => {
         MyBlog
       </Link>
       {isAuth ? (
-        <div>
+        <div className={styles.box}>
           <Link to="/addPost">
             <Button>Создать пост</Button>
           </Link>

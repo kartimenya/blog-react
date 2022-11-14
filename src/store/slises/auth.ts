@@ -2,18 +2,29 @@ import { IAuthResponse, ILogin, IRegist, IUser } from '../../models';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from '../../axios';
 
-export const fetchUserData = createAsyncThunk('auth/fetchUserData', async (params: ILogin) => {
-  const { data } = await axios.post<IAuthResponse>('/auth/login', params);
+export const fetchUserData = createAsyncThunk(
+  'auth/fetchUserData',
+  async (params: ILogin, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post<IAuthResponse>('/auth/login', params);
 
-  return data;
-});
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
 export const fetchRegistration = createAsyncThunk(
   'auth/fetchRegistration',
-  async (params: IRegist) => {
-    const { data } = await axios.post<IAuthResponse>('/auth/registration', params);
+  async (params: IRegist, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.post<IAuthResponse>('/auth/registration', params);
 
-    return data;
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
   },
 );
 
@@ -26,11 +37,13 @@ export const fetchAuthMe = createAsyncThunk('auth/fetchAuthMe', async () => {
 interface AuthState {
   data: IAuthResponse | null;
   statuse: 'idle' | 'pending' | 'succeeded' | 'failed';
+  failedMasage: string;
 }
 
 const initialState: AuthState = {
   data: null,
   statuse: 'idle',
+  failedMasage: '',
 };
 
 const authSlice = createSlice({
@@ -40,6 +53,10 @@ const authSlice = createSlice({
     logOut(state) {
       state.data = null;
       state.statuse = 'idle';
+      state.failedMasage = '';
+    },
+    cleanFailedMasage(state) {
+      state.failedMasage = '';
     },
   },
   extraReducers: (builder) => {
@@ -50,8 +67,9 @@ const authSlice = createSlice({
       state.statuse = 'succeeded';
       state.data = action.payload;
     });
-    builder.addCase(fetchRegistration.rejected, (state) => {
+    builder.addCase(fetchRegistration.rejected, (state, action: PayloadAction<any>) => {
       state.statuse = 'failed';
+      state.failedMasage = action.payload.response.data.message;
     });
     builder.addCase(fetchUserData.pending, (state) => {
       state.statuse = 'pending';
@@ -60,8 +78,9 @@ const authSlice = createSlice({
       state.statuse = 'succeeded';
       state.data = action.payload;
     });
-    builder.addCase(fetchUserData.rejected, (state) => {
+    builder.addCase(fetchUserData.rejected, (state, action: PayloadAction<any>) => {
       state.statuse = 'failed';
+      state.failedMasage = action.payload.response.data.message;
     });
     builder.addCase(fetchAuthMe.pending, (state) => {
       state.statuse = 'pending';
@@ -78,4 +97,4 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
-export const { logOut } = authSlice.actions;
+export const { logOut, cleanFailedMasage } = authSlice.actions;
