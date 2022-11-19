@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout/Layout';
 import { useAppDispatch } from './hooks/reduxHooks';
 import AddPost from './pages/AddPost/AddPost';
-import Home from './pages/Home';
+import Home from './pages/Home/Home';
 import LoginPage from './pages/LoginPage/LoginPage';
 import PostPage from './pages/PostPage/PostPage';
 import RegistrationPage from './pages/RegistrationPage/RegistrationPage';

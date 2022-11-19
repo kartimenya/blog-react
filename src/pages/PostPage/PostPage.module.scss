@@ -1,10 +1,19 @@
 .wrapper {
   display: flex;
+  justify-content: space-between;
+  gap: 15px;
 }
 .main {
   max-width: 675px;
 }
-.fullPost {
+.autor {
+  color: #000;
+  font-weight: 700;
+  span {
+    font-weight: 400;
+    color: #7f888f;
+    font-size: 14px;
+  }
 }
 .img {
   margin-bottom: 20px;
@@ -12,4 +21,32 @@
 }
 .title {
   margin-bottom: 20px;
+}
+.coments {
+  flex-basis: 100%;
+  max-width: 350px;
+  padding: 5px;
+}
+.formComment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+.inputComment {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  background-color: #fff;
+  border: 1px solid rgba(#000, 0.2);
+  border-radius: 5px;
+  padding: 0 10px;
+  height: 30px;
+  font-size: 14px;
+  line-height: 17px;
+  width: 100%;
+}
+.comment {
+  margin-bottom: 10px;
 }

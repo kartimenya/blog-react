@@ -28,3 +28,9 @@ export interface IPost {
   user: IUser;
   imageUrl: string;
 }
+
+export interface IComment {
+  _id: string;
+  text: string;
+  user: IUser;
+}

@@ -2,14 +2,13 @@
   -webkit-appearance: none;
   appearance: none;
   outline: none;
-  background-color: var(--color-white);
+  background-color: #fff;
   border: 1px solid rgba(#000, 0.2);
   border-radius: 5px;
   padding: 0 15px;
   height: 40px;
   font-size: 14px;
   line-height: 17px;
-  color: var(--color-text);
 
   &.error {
     border: 1px solid red;

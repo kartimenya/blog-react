@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import Post from '../components/Post/Post';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { fetchPostsData } from '../store/slises/posts';
+import Post from '../../components/Post/Post';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchPostsData } from '../../store/slises/posts';
+import styles from './Home.module.scss';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +13,7 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className="posts">
+    <div className={styles.posts}>
       {posts.map((post) => (
         <Post key={post._id} {...post} />
       ))}
